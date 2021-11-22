@@ -1,5 +1,6 @@
 package com.cfm.kiln.hardware.driver.DHT22;
 
+import com.cfm.kiln.exception.TimeoutException;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.wiringpi.Gpio;
 
@@ -31,12 +32,12 @@ public abstract class DHTxxBase implements DHTxx {
         }
     }
 
-    protected int[] getRawData() throws Exception {
+    protected int[] getRawData() throws TimeoutException {
         /*
          * Store the count that each DHT bit pulse is low and high. Make sure array
          * is initialized to start at zero.
          */
-        int pulseCounts[] = new int[DHT_PULSES * 2];
+        int[] pulseCounts = new int[DHT_PULSES * 2];
 
         /*
          * Set pin to output.
@@ -89,7 +90,7 @@ public abstract class DHTxxBase implements DHTxx {
                  * Timeout waiting for response.
                  */
                 Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
-                throw new Exception("DHT_ERROR_TIMEOUT");
+                throw new TimeoutException("DHT_ERROR_TIMEOUT");
             }
         }
 
@@ -104,7 +105,7 @@ public abstract class DHTxxBase implements DHTxx {
                      * Timeout waiting for response.
                      */
                     Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
-                    throw new Exception("DHT_ERROR_TIMEOUT: " + pulseCounts[i] + " pulses, " + i);
+                    throw new TimeoutException("DHT_ERROR_TIMEOUT: " + pulseCounts[i] + " pulses, " + i);
                 }
             }
             /*
@@ -116,7 +117,7 @@ public abstract class DHTxxBase implements DHTxx {
                      * Timeout waiting for response.
                      */
                     Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
-                    throw new Exception("DHT_ERROR_TIMEOUT: " + pulseCounts[i + 1] + " pulses, " + i);
+                    throw new TimeoutException("DHT_ERROR_TIMEOUT: " + pulseCounts[i + 1] + " pulses, " + i);
                 }
             }
         }
@@ -146,7 +147,7 @@ public abstract class DHTxxBase implements DHTxx {
          * reference. If the count is less than 50us it must be a ~28us 0 pulse, and
          * if it's higher then it must be a ~70us 1 pulse.
          */
-        int data[] = new int[5];
+        int[] data = new int[5];
         for (int i = 3; i < DHT_PULSES * 2; i += 2) {
             int index = (i - 3) / 16;
             data[index] <<= 1;

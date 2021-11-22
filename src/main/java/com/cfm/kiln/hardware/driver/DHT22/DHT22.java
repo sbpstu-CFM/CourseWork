@@ -1,5 +1,8 @@
 package com.cfm.kiln.hardware.driver.DHT22;
 
+import com.cfm.kiln.exception.ChecksumException;
+import com.cfm.kiln.exception.DHT22DataException;
+import com.cfm.kiln.exception.TimeoutException;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.wiringpi.Gpio;
 
@@ -12,8 +15,8 @@ public class DHT22 extends DHTxxBase {
     }
 
     @Override
-    public DHTdata getData() throws Exception {
-        int atempts = 0;
+    public DHTdata getData() throws DHT22DataException {
+        int attempts = 0;
         while (true) {
             try {
                 int[] data = getRawData();
@@ -22,7 +25,7 @@ public class DHT22 extends DHTxxBase {
                  * Verify checksum of received data.
                  */
                 if (data[4] != ((data[0] + data[1] + data[2] + data[3]) & 0xFF)) {
-                    throw new Exception("DHT_ERROR_CHECKSUM");
+                    throw new ChecksumException("DHT_ERROR_CHECKSUM");
                 }
                 /*
                  * Calculate humidity and temp for DHT22 sensor.
@@ -34,13 +37,13 @@ public class DHT22 extends DHTxxBase {
                 }
 
                 return new DHTdata(temperature, humidity);
-            } catch (Exception e) {
-                atempts++;
-                if (atempts <= 3) {
+            } catch (ChecksumException | TimeoutException e) {
+                attempts++;
+                if (attempts <= 3) {
                     Gpio.delay(DHT_WAIT_INTERVAL);
                     continue;
                 }
-                throw new Exception("Atempts " + atempts, e);
+                throw new DHT22DataException("Attempts " + attempts, e);
             }
         }
     }
