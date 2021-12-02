@@ -4,9 +4,9 @@ import com.cfm.kiln.hardware.driver.DHT22.DHTdata;
 import com.pi4j.io.gpio.Pin;
 
 public interface AirTempHumSensor {
-    void init(Pin pin) throws Exception;
+    void init(Pin pin);
 
-    double getAirTemp() throws Exception;
+    double getAirTemp();
 
-    double getAirHum() throws Exception;
+    double getAirHum();
 }

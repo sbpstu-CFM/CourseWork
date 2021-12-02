@@ -9,28 +9,18 @@ public class AirTempHumSensorDHT22 implements AirTempHumSensor {
     private DHTxx dht22;
 
     @Override
-    public void init(Pin pin) throws Exception {
+    public void init(Pin pin){
         this.dht22 = new DHT22(pin);
         this.dht22.init();
     }
 
     @Override
-    public double getAirTemp() throws Exception {
-        try {
-            return(dht22.getData().getTemperature());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        throw new Exception();
+    public double getAirTemp(){
+        return(dht22.getData().getTemperature());
     }
 
     @Override
-    public double getAirHum() throws Exception {
-        try {
-            return(dht22.getData().getHumidity());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        throw new Exception();
+    public double getAirHum(){
+        return(dht22.getData().getHumidity());
     }
 }

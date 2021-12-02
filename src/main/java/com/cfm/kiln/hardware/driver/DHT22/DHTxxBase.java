@@ -1,5 +1,6 @@
 package com.cfm.kiln.hardware.driver.DHT22;
 
+import com.cfm.kiln.exception.SetupException;
 import com.cfm.kiln.exception.TimeoutException;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.wiringpi.Gpio;
@@ -23,12 +24,12 @@ public abstract class DHTxxBase implements DHTxx {
     }
 
     @Override
-    public void init() throws Exception {
+    public void init() throws SetupException {
         /*
          * Initialize GPIO library.
          */
         if (Gpio.wiringPiSetup() == -1) {
-            throw new Exception("DHT_ERROR_GPIO");
+            throw new SetupException("DHT_ERROR_GPIO");
         }
     }
 
