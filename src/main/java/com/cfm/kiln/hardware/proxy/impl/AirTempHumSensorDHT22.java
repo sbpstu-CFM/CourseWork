@@ -1,5 +1,6 @@
 package com.cfm.kiln.hardware.proxy.impl;
 
+import com.cfm.kiln.data.AirTemperatureHumidityDTO;
 import com.cfm.kiln.hardware.driver.DHT22.DHT22;
 import com.cfm.kiln.hardware.driver.DHT22.DHTxx;
 import com.cfm.kiln.hardware.proxy.AirTempHumSensor;
@@ -22,5 +23,10 @@ public class AirTempHumSensorDHT22 implements AirTempHumSensor {
     @Override
     public double getAirHum(){
         return(dht22.getData().getHumidity());
+    }
+
+    @Override
+    public AirTemperatureHumidityDTO getTH() {
+        return dht22.getData();
     }
 }

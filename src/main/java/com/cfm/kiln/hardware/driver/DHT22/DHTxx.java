@@ -1,5 +1,6 @@
 package com.cfm.kiln.hardware.driver.DHT22;
 
+import com.cfm.kiln.data.AirTemperatureHumidityDTO;
 import com.cfm.kiln.exception.DHT22DataException;
 import com.cfm.kiln.exception.SetupException;
 import com.pi4j.io.gpio.Pin;
@@ -11,5 +12,5 @@ public interface DHTxx {
 
     void setPin(Pin pin);
 
-    DHTdata getData() throws DHT22DataException;
+    AirTemperatureHumidityDTO getData() throws DHT22DataException;
 }

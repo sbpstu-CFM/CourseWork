@@ -1,6 +1,6 @@
 package com.cfm.kiln.hardware.proxy;
 
-import com.cfm.kiln.hardware.driver.DHT22.DHTdata;
+import com.cfm.kiln.data.AirTemperatureHumidityDTO;
 import com.pi4j.io.gpio.Pin;
 
 public interface AirTempHumSensor {
@@ -9,4 +9,6 @@ public interface AirTempHumSensor {
     double getAirTemp();
 
     double getAirHum();
+
+    AirTemperatureHumidityDTO getTH();
 }

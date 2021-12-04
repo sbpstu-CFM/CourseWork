@@ -1,5 +1,6 @@
 package com.cfm.kiln.hardware.driver.DHT22;
 
+import com.cfm.kiln.data.AirTemperatureHumidityDTO;
 import com.cfm.kiln.exception.ChecksumException;
 import com.cfm.kiln.exception.DHT22DataException;
 import com.cfm.kiln.exception.TimeoutException;
@@ -15,7 +16,7 @@ public class DHT22 extends DHTxxBase {
     }
 
     @Override
-    public DHTdata getData() throws DHT22DataException {
+    public AirTemperatureHumidityDTO getData() throws DHT22DataException {
         int attempts = 0;
         while (true) {
             try {
@@ -36,7 +37,7 @@ public class DHT22 extends DHTxxBase {
                     temperature *= -1.0f;
                 }
 
-                return new DHTdata(temperature, humidity);
+                return new AirTemperatureHumidityDTO(temperature, humidity);
             } catch (ChecksumException | TimeoutException e) {
                 attempts++;
                 if (attempts <= 3) {
