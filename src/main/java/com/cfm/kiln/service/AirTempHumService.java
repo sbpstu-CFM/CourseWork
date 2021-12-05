@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @Service
 public class AirTempHumService {
     private ArrayList<AirTempHumSensor> sensors;
-    Logger log = LoggerFactory.getLogger("servLogger");
+    Logger log = LoggerFactory.getLogger(this.getClass());
 
     public AirTempHumService() {
         sensors = new ArrayList<>();

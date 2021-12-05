@@ -4,8 +4,10 @@ import com.cfm.kiln.exception.SetupException;
 import com.cfm.kiln.hardware.proxy.Relay;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.wiringpi.Gpio;
+import lombok.Getter;
 
 public class SimpleRelay implements Relay {
+    @Getter
     private Pin pin;
     private boolean isOpen = false;
 
