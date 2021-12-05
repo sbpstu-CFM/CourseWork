@@ -3,6 +3,7 @@ package com.cfm.kiln.controller;
 import com.cfm.kiln.hardware.proxy.AirTempHumSensor;
 import com.cfm.kiln.hardware.proxy.impl.AirTempHumSensorDHT22;
 import com.cfm.kiln.service.AirTempHumService;
+import com.cfm.kiln.service.ExecutionService;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.wiringpi.Gpio;
@@ -13,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/debug/")
 public class DebugController {
     private AirTempHumService airTempHumService;
+    private ExecutionService executionService;
 
-    @PostMapping("/test")
+    @PostMapping("test")
     @ResponseBody
     public String echoPhrase() {
         AirTempHumSensor dht22 = new AirTempHumSensorDHT22();
@@ -24,6 +26,13 @@ public class DebugController {
         airTempHumService.addSensor(dht22);
         airTempHumService.addSensor(dht22_2);
         return "Hi, I'm online ╰(*°▽°*)╯";
+    }
+
+    @PostMapping("test-run")
+    @ResponseBody
+    public String testRun() {
+        executionService.testRun();
+        return "Wow, test run has started (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧";
     }
 
     @PostMapping("set-pin/{number}")

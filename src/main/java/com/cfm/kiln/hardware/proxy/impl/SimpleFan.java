@@ -22,4 +22,9 @@ public class SimpleFan implements Fan {
     public void stop() {
         relay.close();
     }
+
+    @Override
+    public boolean isRunning() {
+        return relay.isOpen();
+    }
 }

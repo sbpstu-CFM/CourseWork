@@ -22,4 +22,9 @@ public class SimpleHeater implements Heater {
     public void stop() {
         relay.close();
     }
+
+    @Override
+    public boolean isRunning() {
+        return relay.isOpen();
+    }
 }
