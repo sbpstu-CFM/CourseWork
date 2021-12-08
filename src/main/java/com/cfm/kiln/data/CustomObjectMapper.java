@@ -19,6 +19,12 @@ public class CustomObjectMapper {
         return objectMapper.readValue(new File("src/main/resources/woodtype.json"), tr);
     }
 
+    public static List<RegimeDTO> readRegimes() throws IOException {
+        TypeReference<List<RegimeDTO>> tr = new TypeReference<>() {};
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(new File("src/main/resources/schedules.json"), tr);
+    }
+
     public static List<TEMPSchedulePoint> readSchedule() throws IOException {
         TypeReference<List<TEMPSchedulePoint>> tr = new TypeReference<>() {};
         JavaTimeModule module = new JavaTimeModule();
@@ -26,6 +32,6 @@ public class CustomObjectMapper {
         module.addDeserializer(LocalDateTime.class, ldts);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(module);
-        return objectMapper.readValue(new File("src/main/resources/schedule.json"), tr);
+        return objectMapper.readValue(new File("src/main/resources/schedules.json"), tr);
     }
 }
