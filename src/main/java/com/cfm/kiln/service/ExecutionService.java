@@ -1,39 +1,31 @@
 package com.cfm.kiln.service;
 
-import com.cfm.kiln.data.AirTemperatureHumidityDTO;
-import com.cfm.kiln.data.CustomObjectMapper;
-import com.cfm.kiln.data.WoodTypeDTO;
+import com.cfm.kiln.data.*;
 import com.cfm.kiln.exception.SetupException;
 import com.cfm.kiln.hardware.proxy.Fan;
 import com.cfm.kiln.hardware.proxy.Heater;
-import com.cfm.kiln.hardware.proxy.Indicator;
-import com.cfm.kiln.hardware.proxy.Relay;
 import com.cfm.kiln.hardware.proxy.impl.SimpleFan;
 import com.cfm.kiln.hardware.proxy.impl.SimpleHeater;
-import com.cfm.kiln.hardware.proxy.impl.SimpleIndicator;
-import com.cfm.kiln.hardware.proxy.impl.SimpleRelay;
+import com.cfm.kiln.operation.Algorithm;
+import com.cfm.kiln.operation.ScheduleCreator;
 import com.cfm.kiln.operation.SensorsCheckUp;
-import com.cfm.kiln.operation.TEMPAlgorithm;
 import com.pi4j.io.gpio.RaspiPin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class ExecutionService {
-    private List<WoodTypeDTO> woodTypes;
-    private TEMPAlgorithm algorithm;
     private HardwareManagerService hardwareManagerService;
+    private List<WoodTypeDTO> woodTypes;
+    private Algorithm algorithm;
     Logger log = LoggerFactory.getLogger(this.getClass());
-
 
     public ExecutionService() {
         try {
@@ -45,12 +37,18 @@ public class ExecutionService {
         }
     }
 
-    public AirTemperatureHumidityDTO getDesiredCurrentState() {
-        LocalDateTime now = LocalDateTime.now();
-        if (algorithm.hasAlgorithm(now)) {
-            return algorithm.getStateAtTime(now);
+    public void startExecution(AlgorithmParametersDTO parameters) throws IOException {
+        this.algorithm = new Algorithm(ScheduleCreator.createSchedule(parameters));
+
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(new SensorsCheckUp(), 0, 1, TimeUnit.MINUTES);
+    }
+
+    public AirTemperatureHumidityDTO getDesiredCurrentState(double currentMoistureContent) {
+        if (algorithm == null) {
+            throw new IllegalStateException("No algorithm is defined");
         }
-        else return null;
+        return CustomConverter.convertToAirTempHumidity(algorithm.getState(currentMoistureContent));
     }
 
     public void testRun() {
@@ -72,6 +70,4 @@ public class ExecutionService {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(new SensorsCheckUp(), 0, 1, TimeUnit.MINUTES);
     }
-
-
 }

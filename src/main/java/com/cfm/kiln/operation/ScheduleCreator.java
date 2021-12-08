@@ -1,5 +1,6 @@
 package com.cfm.kiln.operation;
 
+import com.cfm.kiln.data.AlgorithmParametersDTO;
 import com.cfm.kiln.data.CustomObjectMapper;
 import com.cfm.kiln.data.RegimeDTO;
 import com.cfm.kiln.data.ScheduleElementDTO;
@@ -10,10 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleCreator {
-    public static List<ScheduleElementDTO> createSchedule(double startMoistureContent,
-                                                          double finishMoistureContent,
-                                                          int woodDensity) throws IOException,
+    public static List<ScheduleElementDTO> createSchedule(AlgorithmParametersDTO parameters) throws IOException,
                                                                                   UnsupportedRegimeException {
+        double startMoistureContent = parameters.getStartMoistureContent();
+        double finishMoistureContent = parameters.getEndMoistureContent();
+        int woodDensity = parameters.getDensity();
         if (startMoistureContent <= 0 || startMoistureContent >= 100) {
             throw new IllegalArgumentException("startMoistureContent must be less than 100 and more than 0");
         }

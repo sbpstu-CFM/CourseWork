@@ -24,14 +24,4 @@ public class CustomObjectMapper {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(new File("src/main/resources/schedules.json"), tr);
     }
-
-    public static List<TEMPSchedulePoint> readSchedule() throws IOException {
-        TypeReference<List<TEMPSchedulePoint>> tr = new TypeReference<>() {};
-        JavaTimeModule module = new JavaTimeModule();
-        LocalDateTimeDeserializer ldts = new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
-        module.addDeserializer(LocalDateTime.class, ldts);
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(module);
-        return objectMapper.readValue(new File("src/main/resources/schedules.json"), tr);
-    }
 }

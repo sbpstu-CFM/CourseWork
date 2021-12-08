@@ -19,8 +19,8 @@ public class SensorsCheckUp implements Runnable{
 
     @Override
     public void run() {
-        AirTemperatureHumidityDTO desired = airTempHumService.getData();
-        AirTemperatureHumidityDTO actual = executionService.getDesiredCurrentState();
+        AirTemperatureHumidityDTO actual = airTempHumService.getData();
+        AirTemperatureHumidityDTO desired = null;
         log.info("Sensors check-up: \n desired: {}, \n actual: {}", desired, actual);
         if(actual == null) return;
         changeDeviceStates(desired, actual);
