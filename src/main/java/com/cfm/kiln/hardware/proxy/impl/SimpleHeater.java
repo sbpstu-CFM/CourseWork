@@ -9,8 +9,8 @@ public class SimpleHeater implements Heater {
 
     @Override
     public void init(Pin pin) {
-        relay = new SimpleRelay();
-        relay.init(pin);
+        this.relay = new SimpleRelay();
+        this.relay.init(pin);
     }
 
     @Override

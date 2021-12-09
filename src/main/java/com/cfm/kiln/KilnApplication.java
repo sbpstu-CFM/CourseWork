@@ -21,7 +21,7 @@ public class KilnApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(KilnApplication.class, args);
-        testOperation();
+        //testOperation();
     }
 
     /**

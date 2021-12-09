@@ -22,6 +22,6 @@ public class CustomObjectMapper {
     public static List<RegimeDTO> readRegimes() throws IOException {
         TypeReference<List<RegimeDTO>> tr = new TypeReference<>() {};
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(new File("src/main/resources/schedules.json"), tr);
+        return objectMapper.readValue(new File("./schedules.json"), tr);
     }
 }

@@ -7,32 +7,27 @@ import com.cfm.kiln.service.ExecutionService;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.wiringpi.Gpio;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/debug/")
+@RequiredArgsConstructor
 public class DebugController {
-    private AirTempHumService airTempHumService;
-    private ExecutionService executionService;
+    private final AirTempHumService airTempHumService;
+    private final ExecutionService executionService;
 
     @PostMapping("test")
     @ResponseBody
     public String echoPhrase() {
         AirTempHumSensor dht22 = new AirTempHumSensorDHT22();
-        dht22.init(RaspiPin.GPIO_07);
+        dht22.init(RaspiPin.GPIO_02);
         AirTempHumSensor dht22_2 = new AirTempHumSensorDHT22();
-        dht22_2.init(RaspiPin.GPIO_06);
+        dht22_2.init(RaspiPin.GPIO_03);
         airTempHumService.addSensor(dht22);
         airTempHumService.addSensor(dht22_2);
         return "Hi, I'm online ╰(*°▽°*)╯";
-    }
-
-    @PostMapping("test-run")
-    @ResponseBody
-    public String testRun() {
-        executionService.testRun();
-        return "Wow, test run has started (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧";
     }
 
     @PostMapping("set-pin/{number}")

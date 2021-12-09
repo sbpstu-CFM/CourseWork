@@ -28,7 +28,7 @@ class AlgorithmTest {
         scheduleElementDTOS.add(el40);
         scheduleElementDTOS.add(el30);
         scheduleElementDTOS.add(el20);
-        algorithm = new Algorithm(scheduleElementDTOS);
+        algorithm = new Algorithm(scheduleElementDTOS, 0);
     }
 
     @Test
